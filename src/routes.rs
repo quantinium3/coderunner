@@ -1,11 +1,11 @@
 use axum::{Router, http::StatusCode, response::IntoResponse, routing::get};
 
-pub fn app_router() -> Router {
-    Router::new().route("/", get(root)).fallback(handler_404)
-}
+use crate::handlers::health::healthz;
 
-async fn root() -> &'static str {
-    "hello world"
+pub fn app_router() -> Router {
+    Router::new()
+        .route("/healthz", get(healthz))
+        .fallback(handler_404)
 }
 
 async fn handler_404() -> impl IntoResponse {

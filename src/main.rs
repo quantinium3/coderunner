@@ -2,6 +2,7 @@ mod config;
 mod error;
 mod routes;
 mod utils;
+mod handlers;
 
 use std::net::SocketAddrV4;
 
