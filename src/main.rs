@@ -22,6 +22,7 @@ async fn main() -> Result<(), ServerError> {
     let app = app_router();
 
     let listener = tokio::net::TcpListener::bind(socket_addr).await?;
+    tracing::info!("server listening on: {}", socket_addr);
     axum::serve(listener, app).await?;
     Ok(())
 }
