@@ -1,5 +1,5 @@
 {
-  description = "A development environment with OpenSSL for Rust projects";
+  description = "idk man";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -15,7 +15,7 @@
       {
         devShells.default = pkgs.mkShell {
           packages = [
-            pkgs.openssl
+            openssl
             pkgs.pkg-config
           ];
 
@@ -31,10 +31,6 @@
 
           shellHook = ''
             export RUSTFLAGS="-C link-arg=-L${openssl.out}/lib"
-            echo "OpenSSL environment configured:"
-            echo "  OPENSSL_DIR: $OPENSSL_DIR"
-            echo "  OPENSSL_LIB_DIR: $OPENSSL_LIB_DIR"
-            echo "  PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
           '';
         };
       }
