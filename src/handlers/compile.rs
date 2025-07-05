@@ -1,20 +1,50 @@
-use axum::{Json, response::IntoResponse};
+use std::str::FromStr;
+
+use crate::infra::{compile::compile_lang, error::InfraError};
+use axum::Json;
 use serde::{Deserialize, Serialize};
-use tracing;
+
+use super::error::ApiError;
 
 #[derive(Serialize)]
-struct CompilerResponse {
-    lang: String,
+pub struct CompilerResponse {
+    result: String,
 }
 
 #[derive(Deserialize)]
 pub struct CompilerRequest {
     lang: String,
+    content: String,
+    #[serde(default)]
+    stdin: String,
 }
 
-pub async fn compile(Json(payload): Json<CompilerRequest>) -> impl IntoResponse {
-    tracing::debug!("lang: {}", payload.lang);
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+enum Language {
+    Python,
+}
 
-    let res = CompilerResponse { lang: payload.lang };
-    Json(res)
+impl FromStr for Language {
+    type Err = InfraError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "python" => Ok(Language::Python),
+            _ => Err(InfraError::UnsupportedLanguage(
+                format!("{} language is not supported", s).into(),
+            )),
+        }
+    }
+}
+
+pub async fn compile(
+    Json(payload): Json<CompilerRequest>,
+) -> Result<Json<CompilerResponse>, ApiError> {
+    payload.lang.parse::<Language>()?;
+    let res = compile_lang(&payload.lang, &payload.content, &payload.stdin).await?;
+
+    Ok(Json(CompilerResponse {
+        result: res.to_string(),
+    }))
 }
