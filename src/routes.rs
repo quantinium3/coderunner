@@ -1,6 +1,6 @@
 use axum::{Router, http::StatusCode, response::IntoResponse, routing::{get, post}};
 
-use crate::handlers::{compile::compile, health::healthz};
+use crate::{handlers::{compile::compile, health::healthz}};
 
 pub fn app_router() -> Router {
     Router::new()

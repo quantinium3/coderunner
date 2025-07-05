@@ -1,5 +1,5 @@
 use dotenvy::dotenv;
-use std::env;
+use std::{env};
 use tokio::sync::OnceCell;
 
 #[derive(Debug)]
@@ -35,6 +35,7 @@ async fn init_config() -> Config {
             .parse::<u16>()
             .unwrap(),
     };
+
 
     Config {
         server: server_config,
