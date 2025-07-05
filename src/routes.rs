@@ -9,6 +9,10 @@ pub fn app_router() -> Router {
         .fallback(handler_404)
 }
 
+pub fn test_router() -> Router {
+    app_router()
+}
+
 async fn handler_404() -> impl IntoResponse {
     (
         StatusCode::NOT_FOUND,

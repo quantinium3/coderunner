@@ -1,16 +1,8 @@
-mod config;
-mod error;
-mod routes;
-mod utils;
-mod handlers;
-mod infra;
-
 use std::net::SocketAddrV4;
-
-use config::config;
-use error::ServerError;
-use routes::app_router;
-use utils::init_tracing;
+use comphub::config::config;
+use comphub::error::ServerError;
+use comphub::routes::app_router;
+use comphub::utils::init_tracing;
 
 #[tokio::main]
 async fn main() -> Result<(), ServerError> {

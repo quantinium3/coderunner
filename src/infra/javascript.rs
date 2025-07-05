@@ -1,0 +1,41 @@
+use std::{io::Write, process::Stdio};
+
+use tempfile::NamedTempFile;
+use tokio::{io::AsyncWriteExt, process::Command};
+
+use super::error::InfraError;
+
+pub async fn compile_javascript(content: &str, stdin_input: &str) -> Result<String, InfraError> {
+    let mut temp_file = NamedTempFile::new()?;
+    temp_file.write_all(content.as_bytes())?;
+    temp_file.flush()?;
+
+    let mut cmd = Command::new("bun")
+        .args(temp_file.path())
+        .stdout(Stdio::piped())
+        .stdin(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()?;
+
+    if let Some(mut stdin) = cmd.stdin.take() {
+        stdin.write_all(stdin_input.as_bytes()).await?;
+        stdin.flush().await?;
+        drop(stdin);
+    }
+
+    let output = cmd.wait_with_output().await?;
+
+    match output.status.code() {
+        Some(0) => Ok(String::from_utf8(output.stdout)?),
+        Some(code) => {
+            let stderr = String::from_utf8(output.stderr)?;
+            Err(InfraError::CompilationError(format!(
+                "Failed to compile javascript. Program returned with Error code: {}, stderr: {}",
+                code, stderr
+            ).into()))
+        }
+        None => Err(InfraError::CompilationError(
+            "Program returned no error code".into(),
+        )),
+    }
+}
