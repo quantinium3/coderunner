@@ -4,7 +4,6 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use serde_json::json;
-use std::{num::ParseIntError, str::FromStr};
 use thiserror::Error;
 use tracing;
 
@@ -25,7 +24,7 @@ pub enum ApiError {
     NotAcceptible(String),
 
     #[error("Not Acceptable: {0}")]
-    InternalServerError(#[from] InfraError)
+    InternalServerError(#[from] InfraError),
 }
 
 impl IntoResponse for ApiError {
@@ -42,9 +41,10 @@ impl IntoResponse for ApiError {
                 StatusCode::NOT_ACCEPTABLE,
                 format!("Not Acceptable: {}", msg),
             ),
-            Self::InternalServerError(err) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, format!("Internal server error: {}", err))
-            }
+            Self::InternalServerError(err) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                format!("Internal server error: {}", err),
+            ),
         };
 
         (status, Json(json!({ "message": err_msg }))).into_response()
