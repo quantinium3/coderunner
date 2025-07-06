@@ -26,7 +26,10 @@ enum Language {
     JAVASCRIPT,
     TYPESCRIPT,
     C,
-    CPP
+    CPP,
+    RUST,
+    NIX,
+    GO
 }
 
 impl FromStr for Language {
@@ -39,6 +42,9 @@ impl FromStr for Language {
             "typescript" => Ok(Language::TYPESCRIPT),
             "c" => Ok(Language::C),
             "cpp" => Ok(Language::CPP),
+            "rust" => Ok(Language::RUST),
+            "nix" => Ok(Language::NIX),
+            "go" => Ok(Language::GO),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),

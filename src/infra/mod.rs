@@ -4,3 +4,6 @@ mod cpp;
 pub mod error;
 mod javascript;
 mod python;
+mod rust;
+mod nix;
+mod go;
