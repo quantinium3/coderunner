@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { Editor } from './components/Editor';
+import { Navbar } from './components/Navbar';
+import { languages } from './consts';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [selectedLanguage, setSelectedLanguage] = useState('python');
+    const [languageContents, setLanguageContents] = useState(() => {
+        const initialContents = {};
+        languages.forEach(lang => {
+            initialContents[lang.value] = lang.defaultCode;
+        });
+        return initialContents;
+    });
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const currentLanguage = languages.find(lang => lang.value === selectedLanguage);
+    const currentContent = languageContents[selectedLanguage] || '';
+
+    const handleLanguageChange = (newLanguage) => {
+        setSelectedLanguage(newLanguage);
+    };
+
+    const handleContentChange = (newContent) => {
+        setLanguageContents(prev => ({
+            ...prev,
+            [selectedLanguage]: newContent
+        }));
+    };
+
+    return (
+        <div className="flex flex-col h-screen">
+            <Navbar />
+            <div className="flex-shrink-0 px-5 py-2.5 bg-gray-100 border-b border-gray-300 flex items-center gap-2.5">
+                <label htmlFor="language-select" className="font-bold">
+                    Language:
+                </label>
+                <select
+                    id="language-select"
+                    value={selectedLanguage}
+                    onChange={(e) => handleLanguageChange(e.target.value)}
+                    className="px-2.5 py-1 border border-gray-300 rounded text-sm"
+                >
+                    {languages.map(lang => (
+                        <option key={lang.value} value={lang.value}>
+                            {lang.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="flex-grow h-[90vh]">
+                <Editor
+                    content={currentContent}
+                    onChange={handleContentChange}
+                    extension={currentLanguage?.extension ? [currentLanguage.extension] : []}
+                />
+            </div>
+        </div>
+    );
 }
 
-export default App
+export default App;
