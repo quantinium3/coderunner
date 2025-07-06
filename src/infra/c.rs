@@ -9,7 +9,7 @@ pub async fn compile_c(content: &str, stdin_input: &str) -> Result<String, Infra
     temp_file.flush()?;
 
     let source_path = temp_file.path().to_path_buf();
-    let mut executable_file = NamedTempFile::new()?;
+    let executable_file = NamedTempFile::new()?;
     let executable_path = executable_file.path().to_path_buf();
     drop(executable_file);
 

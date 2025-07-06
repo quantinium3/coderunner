@@ -23,6 +23,10 @@ pub struct CompilerRequest {
 #[serde(rename_all = "lowercase")]
 enum Language {
     Python,
+    JAVASCRIPT,
+    TYPESCRIPT,
+    C,
+    CPP
 }
 
 impl FromStr for Language {
@@ -31,6 +35,10 @@ impl FromStr for Language {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_lowercase().as_str() {
             "python" => Ok(Language::Python),
+            "javascript" => Ok(Language::JAVASCRIPT),
+            "typescript" => Ok(Language::TYPESCRIPT),
+            "c" => Ok(Language::C),
+            "cpp" => Ok(Language::CPP),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),
