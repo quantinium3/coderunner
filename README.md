@@ -23,7 +23,7 @@ languages supported :-
 - [x] perl
 - [x] crystal
 - [ ] nim
-- [ ] haskell
+- [x] haskell
 - [ ] elm
 - [ ] f#
 - [ ] ocaml

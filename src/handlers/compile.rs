@@ -41,6 +41,7 @@ enum Language {
     R,
     PERL,
     CRYSTAL,
+    HASKELL,
 }
 
 impl FromStr for Language {
@@ -67,6 +68,7 @@ impl FromStr for Language {
             "r" => Ok(Language::R),
             "perl" => Ok(Language::PERL),
             "crystal" => Ok(Language::CRYSTAL),
+            "haskell" => Ok(Language::HASKELL),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),
