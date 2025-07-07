@@ -17,3 +17,4 @@ mod lua;
 mod julia;
 mod r;
 mod perl;
+mod crystal;
