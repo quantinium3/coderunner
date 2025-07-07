@@ -7,3 +7,5 @@ mod python;
 mod rust;
 mod nix;
 mod go;
+mod zig;
+

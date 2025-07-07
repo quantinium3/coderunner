@@ -1,19 +1,16 @@
 use super::error::InfraError;
-use std::{fs::File, io::Write, path::Path, process::Stdio};
-use tempfile::{NamedTempFile, TempDir};
+use std::{fs::File, io::Write, process::Stdio};
+use tempfile::{TempDir};
 use tokio::{fs::metadata, io::AsyncWriteExt, process::Command};
 
 pub async fn compile_go(content: &str, stdin_input: &str) -> Result<String, InfraError> {
-    // Create a temporary directory to avoid noexec issues
     let temp_dir = TempDir::new()?;
     let temp_file_path = temp_dir.path().join("program.go");
 
-    // Create and write to the file
     let mut temp_file = File::create(&temp_file_path)?;
     temp_file.write_all(content.as_bytes())?;
     temp_file.flush()?;
 
-    // Verify the file exists and has content
     if !temp_file_path.exists() {
         return Err(InfraError::CompilationError(
             format!("Temporary file does not exist: {:?}", temp_file_path).into(),
@@ -27,28 +24,24 @@ pub async fn compile_go(content: &str, stdin_input: &str) -> Result<String, Infr
         ));
     }
 
-    // Debug: Log the file path and content for verification
     eprintln!("Executing go run on file: {:?}", temp_file_path);
     eprintln!("File content: {}", content);
 
-    // Run the Go program
     let mut cmd = Command::new("go")
         .arg("run")
         .arg(&temp_file_path)
-        .current_dir(temp_dir.path()) // Set working directory to temp_dir
+        .current_dir(temp_dir.path())
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()?;
 
-    // Write to stdin if provided
     if let Some(mut stdin) = cmd.stdin.take() {
         stdin.write_all(stdin_input.as_bytes()).await?;
         stdin.flush().await?;
         drop(stdin);
     }
 
-    // Wait for the command to complete and capture output
     let output = cmd.wait_with_output().await?;
     match output.status.code() {
         Some(0) => Ok(String::from_utf8(output.stdout)?),
@@ -372,7 +365,6 @@ package main
 
 import (
     "fmt"
-    "time"
 )
 
 func worker(id int, c chan int) {

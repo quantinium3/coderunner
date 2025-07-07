@@ -16,6 +16,8 @@
         devShells.default = pkgs.mkShell {
           packages = [
             openssl
+            pkgs.zig
+            pkgs.bacon
             pkgs.pkg-config
           ];
 

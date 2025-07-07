@@ -29,7 +29,8 @@ enum Language {
     CPP,
     RUST,
     NIX,
-    GO
+    GO,
+    ZIG,
 }
 
 impl FromStr for Language {
@@ -45,6 +46,7 @@ impl FromStr for Language {
             "rust" => Ok(Language::RUST),
             "nix" => Ok(Language::NIX),
             "go" => Ok(Language::GO),
+            "zig" => Ok(Language::ZIG),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),

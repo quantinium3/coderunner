@@ -1,0 +1,70 @@
+languages supported :- 
+- [x] python
+- [x] javascript
+- [x] typescript 
+- [x] c
+- [x] cpp
+- [x] rust
+- [x] nix
+- [x] go
+- [x] zig
+- [ ] d
+- [ ] swift
+- [ ] objective c
+- [ ] c#
+- [ ] kotlin
+- [ ] scala
+- [ ] groovy
+- [ ] dart
+- [ ] ruby 
+- [ ] lua
+- [ ] julia
+- [ ] R
+- [ ] perl
+- [ ] crystal
+- [ ] nim
+- [ ] haskell
+- [ ] elm
+- [ ] f#
+- [ ] ocaml
+- [ ] elixir
+- [ ] erlang
+- [ ] php
+- [ ] fortran
+- [ ] cobol
+- [ ] ada
+- [ ] pascal
+- [ ] scheme
+- [ ] clojure
+- [ ] bash
+- [ ] powershell
+- [ ] assembly
+- [ ] prolog
+- [ ] Carbon
+- [ ] fish
+- [ ] agda
+- [ ] purescript
+- [ ] coffeescript
+- [ ] Hack
+- [ ] gleam
+- [ ] odin
+- [ ] B
+- [ ] forth
+- [ ] smalltalk
+- [ ] tcl
+- [ ] vb
+- [ ] jq
+- [ ] algol
+- [ ] idris
+- [ ] whitespace
+- [ ] factor
+- [ ] racket
+- [ ] common lisp
+- [ ] vala
+- [ ] mercury
+- [ ] pike
+- [ ] wren
+- [ ] logtalk
+- [ ] io
+- [ ] v
+- [ ] janet
