@@ -12,3 +12,7 @@ mod d;
 mod scala;
 mod groovy;
 mod dart;
+mod ruby;
+mod lua;
+mod julia;
+mod r;

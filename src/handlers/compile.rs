@@ -34,6 +34,11 @@ enum Language {
     D,
     SCALA,
     GROOVY,
+    DART,
+    RUBY,
+    LUA,
+    JULIA,
+    R,
 }
 
 impl FromStr for Language {
@@ -53,6 +58,11 @@ impl FromStr for Language {
             "d" => Ok(Language::D),
             "scala" => Ok(Language::SCALA),
             "groovy" => Ok(Language::GROOVY),
+            "dart" => Ok(Language::DART),
+            "ruby" => Ok(Language::RUBY),
+            "lua" => Ok(Language::LUA),
+            "julia" => Ok(Language::JULIA),
+            "r" => Ok(Language::R),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),
