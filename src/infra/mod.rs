@@ -11,3 +11,4 @@ mod zig;
 mod d;
 mod scala;
 mod groovy;
+mod dart;
