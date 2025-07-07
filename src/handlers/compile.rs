@@ -39,6 +39,7 @@ enum Language {
     LUA,
     JULIA,
     R,
+    PERL,
 }
 
 impl FromStr for Language {
@@ -63,6 +64,7 @@ impl FromStr for Language {
             "lua" => Ok(Language::LUA),
             "julia" => Ok(Language::JULIA),
             "r" => Ok(Language::R),
+            "perl" => Ok(Language::PERL),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),
