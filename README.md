@@ -8,13 +8,13 @@ languages supported :-
 - [x] nix
 - [x] go
 - [x] zig
-- [ ] d
+- [x] d
 - [ ] swift
 - [ ] objective c
 - [ ] c#
 - [ ] kotlin
-- [ ] scala
-- [ ] groovy
+- [x] scala
+- [x] groovy
 - [ ] dart
 - [ ] ruby 
 - [ ] lua

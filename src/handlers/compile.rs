@@ -31,6 +31,9 @@ enum Language {
     NIX,
     GO,
     ZIG,
+    D,
+    SCALA,
+    GROOVY,
 }
 
 impl FromStr for Language {
@@ -47,6 +50,9 @@ impl FromStr for Language {
             "nix" => Ok(Language::NIX),
             "go" => Ok(Language::GO),
             "zig" => Ok(Language::ZIG),
+            "d" => Ok(Language::D),
+            "scala" => Ok(Language::SCALA),
+            "groovy" => Ok(Language::GROOVY),
             _ => Err(InfraError::UnsupportedLanguage(
                 format!("{} language is not supported", s).into(),
             )),

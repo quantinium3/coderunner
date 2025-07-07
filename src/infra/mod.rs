@@ -8,4 +8,6 @@ mod rust;
 mod nix;
 mod go;
 mod zig;
-
+mod d;
+mod scala;
+mod groovy;
