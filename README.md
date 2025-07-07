@@ -15,13 +15,13 @@ languages supported :-
 - [ ] kotlin
 - [x] scala
 - [x] groovy
-- [ ] dart
-- [ ] ruby 
-- [ ] lua
-- [ ] julia
-- [ ] R
-- [ ] perl
-- [ ] crystal
+- [x] dart
+- [x] ruby 
+- [x] lua
+- [x] julia
+- [x] R
+- [x] perl
+- [x] crystal
 - [ ] nim
 - [ ] haskell
 - [ ] elm

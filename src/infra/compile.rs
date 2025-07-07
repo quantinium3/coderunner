@@ -1,8 +1,9 @@
 use super::{
-    c::compile_c, cpp::compile_cpp, d::compile_d, dart::compile_dart, error::InfraError,
-    go::compile_go, groovy::compile_groovy, javascript::compile_javascript, julia::compile_julia,
-    lua::compile_lua, nix::compile_nix, perl::compile_perl, python::compile_python, r::compile_r,
-    ruby::compile_ruby, rust::compile_rust, scala::compile_scala, zig::compile_zig,
+    c::compile_c, cpp::compile_cpp, crystal::compile_crystal, d::compile_d, dart::compile_dart,
+    error::InfraError, go::compile_go, groovy::compile_groovy, javascript::compile_javascript,
+    julia::compile_julia, lua::compile_lua, nix::compile_nix, perl::compile_perl,
+    python::compile_python, r::compile_r, ruby::compile_ruby, rust::compile_rust,
+    scala::compile_scala, zig::compile_zig,
 };
 
 pub async fn compile_lang(lang: &str, content: &str, stdin: &str) -> Result<String, InfraError> {
@@ -25,6 +26,7 @@ pub async fn compile_lang(lang: &str, content: &str, stdin: &str) -> Result<Stri
         "julia" => compile_julia(content, stdin).await,
         "r" => compile_r(content, stdin).await,
         "perl" => compile_perl(content, stdin).await,
+        "crystal" => compile_crystal(content, stdin).await,
         _ => Err(InfraError::UnsupportedLanguage(format!(
             "{} languages is not supported",
             lang
