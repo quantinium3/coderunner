@@ -1,73 +1,248 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Editor } from './components/Editor';
-import { Navbar } from './components/Navbar';
-import { languages } from './consts';
 import { type Extension } from '@codemirror/state';
+import { python } from '@codemirror/lang-python';
+import { loadLanguage } from '@uiw/codemirror-extensions-langs';
+import axios from "axios";
 
-interface Language {
-  value: string;
-  name: string;
-  defaultCode: string;
-  extension?: Extension;
+type state = {
+    value: string
+    language: string;
+    content: string;
+    extension: Extension | unknown,
 }
 
-interface LanguageContents {
-  [key: string]: string;
-}
+const States: state[] = [
+    {
+        value: 'c',
+        language: 'c',
+        content: '#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
+        extension: loadLanguage('c')
+    },
+    {
+        value: 'cpp',
+        language: 'cpp',
+        content: '#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!" << endl;\n    return 0;\n}',
+        extension: loadLanguage('cpp')
+    },
+    {
+        value: 'python',
+        language: 'python',
+        content: 'print("Hello, World!")',
+        extension: loadLanguage('python')
+    },
+    {
+        value: 'java',
+        language: 'java',
+        content: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
+        extension: loadLanguage('java')
+    },
+    {
+        value: 'javascript',
+        language: 'javascript',
+        content: 'console.log("Hello, World!");',
+        extension: loadLanguage('javascript')
+    }
+];
+
 
 function App() {
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('python');
-  const [languageContents, setLanguageContents] = useState<LanguageContents>(() => {
-    const initialContents: LanguageContents = {};
-    languages.forEach((lang: Language) => {
-      initialContents[lang.value] = lang.defaultCode;
-    });
-    return initialContents;
-  });
+    const [editorState, setEditorState] = useState<state>({
+        value: "python",
+        content: `print("hello world")`,
+        language: "python",
+        extension: python(),
+    })
+    const [result, setResult] = useState("");
+    const [stdin, setStdin] = useState("");
 
-  const currentLanguage = languages.find((lang: Language) => lang.value === selectedLanguage);
-  const currentContent: string = languageContents[selectedLanguage] || '';
+    const [leftWidth, setLeftWidth] = useState(50);
+    const [topHeight, setTopHeight] = useState(50);
+    const [isResizingHorizontal, setIsResizingHorizontal] = useState(false);
+    const [isResizingVertical, setIsResizingVertical] = useState(false);
 
-  const handleLanguageChange = (newLanguage: string): void => {
-    setSelectedLanguage(newLanguage);
-  };
+    const containerRef = useRef<HTMLDivElement>(null);
+    const rightPanelRef = useRef<HTMLDivElement>(null);
 
-  const handleContentChange = (newContent: string): void => {
-    setLanguageContents((prev: LanguageContents) => ({
-      ...prev,
-      [selectedLanguage]: newContent,
-    }));
-  };
+    const onEditorStateChange = (content: string) => {
+        setEditorState((prev: state) => ({
+            ...prev,
+            content: content
+        }))
+    }
 
-  return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-      <div className="flex-shrink-0 px-5 py-2.5 bg-gray-100 border-b border-gray-300 flex items-center gap-2.5">
-        <label htmlFor="language-select" className="font-bold">
-          Language:
-        </label>
-        <select
-          id="language-select"
-          value={selectedLanguage}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleLanguageChange(e.target.value)}
-          className="px-2.5 py-1 border border-gray-300 rounded text-sm"
-        >
-          {languages.map((lang: Language) => (
-            <option key={lang.value} value={lang.value}>
-              {lang.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex-grow h-[90vh]">
-        <Editor
-          content={currentContent}
-          onChange={handleContentChange}
-          extension={currentLanguage?.extension ? [currentLanguage.extension] : []}
-        />
-      </div>
-    </div>
-  );
+    const onLanguageChange = (lang: string) => {
+        const selectedState = States.find(state => state.value === lang);
+
+        if (selectedState) {
+            setEditorState((prev: state) => ({
+                ...prev,
+                value: selectedState.value,
+                language: selectedState.language,
+                content: selectedState.content,
+                extension: selectedState.extension
+            }))
+        }
+    }
+
+    const compileCode = () => {
+        axios.post("http://localhost:5000/api/v1/compile", {
+            lang: editorState.language,
+            content: editorState.content,
+            stdin: stdin
+        }).then((res) => {
+            setResult(res.data.result);
+        }).catch((err) => {
+            setResult("Error: " + err.message);
+        })
+    }
+
+    const onResultChange = (content: string) => {
+        setResult(content);
+    }
+
+    const onStdinChange = (content: string) => {
+        setStdin(content);
+    }
+
+    const handleHorizontalMouseDown = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsResizingHorizontal(true);
+    };
+
+    const handleVerticalMouseDown = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsResizingVertical(true);
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (isResizingHorizontal && containerRef.current) {
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100;
+                setLeftWidth(Math.max(20, Math.min(80, newWidth)));
+            }
+
+            if (isResizingVertical && rightPanelRef.current) {
+                const rightPanelRect = rightPanelRef.current.getBoundingClientRect();
+                const newHeight = ((e.clientY - rightPanelRect.top) / rightPanelRect.height) * 100;
+                setTopHeight(Math.max(10, Math.min(90, newHeight)));
+            }
+        };
+
+        const handleMouseUp = () => {
+            setIsResizingHorizontal(false);
+            setIsResizingVertical(false);
+        };
+
+        if (isResizingHorizontal || isResizingVertical) {
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isResizingHorizontal, isResizingVertical]);
+
+    return (
+        <div className="flex flex-col h-screen">
+            <div className="flex-shrink-0 px-5 py-2.5 bg-gray-100 border-b border-gray-300 flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
+                    <label htmlFor="language-select" className="font-bold">
+                        Language:
+                    </label>
+                    <select
+                        id="language-select"
+                        value={editorState.value}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onLanguageChange(e.target.value)}
+                        className="px-2.5 py-1 border border-gray-300 rounded text-sm"
+                    >
+                        {States.map((State: state) => (
+                            <option key={State.value} value={State.value}>
+                                {State.language}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <button
+                        onClick={compileCode}
+                        className="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                    >
+                        Compile
+                    </button>
+                </div>
+            </div>
+
+            <div className='flex flex-1 overflow-hidden' ref={containerRef}>
+                <div
+                    className="bg-white border-r border-gray-300 flex flex-col overflow-auto"
+                    style={{ width: `${leftWidth}%` }}
+                >
+                    <div className="bg-gray-50 px-3 py-1 border-b border-gray-200 text-sm font-medium">
+                        Code Editor
+                    </div>
+                    <div className="flex-1">
+                        <Editor
+                            content={editorState.content}
+                            onChange={onEditorStateChange}
+                            extension={editorState.extension}
+                        />
+                    </div>
+                </div>
+
+                <div
+                    className="w-1 bg-gray-300 cursor-col-resize hover:bg-gray-400 transition-colors flex-shrink-0"
+                    onMouseDown={handleHorizontalMouseDown}
+                />
+
+                <div
+                    className="flex flex-col flex-1 overflow-auto"
+                    style={{ width: `${100 - leftWidth}%` }}
+                    ref={rightPanelRef}
+                >
+                    <div
+                        className="bg-white border-b border-gray-300 flex flex-col"
+                        style={{ height: `${topHeight}%` }}
+                    >
+                        <div className="bg-gray-50 px-3 py-1 border-b border-gray-200 text-sm font-medium">
+                            Input (stdin)
+                        </div>
+                        <div className="flex-1 overflow-auto">
+                            <Editor
+                                content={stdin}
+                                onChange={onStdinChange}
+                                extension={[loadLanguage('shell')]}
+                            />
+                        </div>
+                    </div>
+
+                    <div
+                        className="h-[2px] bg-gray-300 cursor-row-resize hover:bg-gray-400 transition-colors flex-shrink-0"
+                        onMouseDown={handleVerticalMouseDown}
+                    />
+
+                    <div
+                        className="bg-white flex flex-col"
+                        style={{ height: `${100 - topHeight}%` }}
+                    >
+                        <div className="bg-gray-50 px-3 py-1 border-b border-gray-200 text-sm font-medium">
+                            Output
+                        </div>
+                        <div className="flex-1 overflow-auto">
+                            <Editor
+                                content={result}
+                                onChange={onResultChange}
+                                extension={[loadLanguage('shell')]}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;

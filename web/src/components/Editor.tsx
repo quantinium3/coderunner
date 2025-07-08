@@ -2,14 +2,14 @@ import CodeMirror from "@uiw/react-codemirror";
 
 export const Editor = ({ content, onChange, extension }) => {
     return (
-        <div className="flex flex-col gap-2 h-full">
+        <div className="h-full overflow-hidden">
             <CodeMirror
                 value={content}
                 height="100%"
                 extensions={extension}
                 onChange={onChange}
                 theme="dark"
-                className="text-sm md:text-base overflow-auto h-full"
+                className="text-sm md:text-base h-full"
                 basicSetup={{
                     lineNumbers: true,
                     highlightActiveLine: true,
