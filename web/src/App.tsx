@@ -45,7 +45,6 @@ const States: state[] = [
     }
 ];
 
-
 function App() {
     const [editorState, setEditorState] = useState<state>({
         value: "python",
@@ -61,8 +60,22 @@ function App() {
     const [isResizingHorizontal, setIsResizingHorizontal] = useState(false);
     const [isResizingVertical, setIsResizingVertical] = useState(false);
 
+    const [isMobile, setIsMobile] = useState(false);
+    const [showEditor, setShowEditor] = useState(true);
+
     const containerRef = useRef<HTMLDivElement>(null);
     const rightPanelRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const onEditorStateChange = (content: string) => {
         setEditorState((prev: state) => ({
@@ -92,8 +105,14 @@ function App() {
             stdin: stdin
         }).then((res) => {
             setResult(res.data.result);
+            if (isMobile) {
+                setShowEditor(false);
+            }
         }).catch((err) => {
             setResult("Error: " + err.message);
+            if (isMobile) {
+                setShowEditor(false);
+            }
         })
     }
 
@@ -173,72 +192,167 @@ function App() {
                         Compile
                     </button>
                 </div>
+
+
             </div>
 
             <div className='flex flex-1 overflow-hidden' ref={containerRef}>
-                <div
-                    className="bg-zinc-900 border-r border-gray-300 flex flex-col overflow-auto"
-                    style={{ width: `${leftWidth}%` }}
-                >
-                    <div className="bg-[#222222] px-3 py-2 border-b-1 border-zinc-700 text-sm font-medium text-gray-100">
-                        Code Editor
-                    </div>
-                    <div className="flex-1">
-                        <Editor
-                            content={editorState.content}
-                            onChange={onEditorStateChange}
-                            extension={editorState.extension}
+                {!isMobile && (
+                    <>
+                        <div
+                            className="bg-zinc-900 border-r border-gray-300 flex flex-col overflow-auto"
+                            style={{ width: `${leftWidth}%` }}
+                        >
+                            <div className="bg-[#222222] px-3 py-2 border-b-1 border-zinc-700 text-sm font-medium text-gray-100">
+                                Code Editor
+                            </div>
+                            <div className="flex-1">
+                                <Editor
+                                    content={editorState.content}
+                                    onChange={onEditorStateChange}
+                                    extension={editorState.extension}
+                                />
+                            </div>
+                        </div>
+
+                        <div
+                            className="w-[1px] bg-zinc-900 border-zinc-800 cursor-col-resize hover:bg-gray-700 transition-colors flex-shrink-0"
+                            onMouseDown={handleHorizontalMouseDown}
                         />
-                    </div>
-                </div>
 
-                <div
-                    className="w-[1px] bg-zinc-900 border-zinc-800 cursor-col-resize hover:bg-gray-700 transition-colors flex-shrink-0"
-                    onMouseDown={handleHorizontalMouseDown}
-                />
+                        <div
+                            className="flex flex-col flex-1 overflow-auto"
+                            style={{ width: `${100 - leftWidth}%` }}
+                            ref={rightPanelRef}
+                        >
+                            <div
+                                className="bg-white border-b border-gray-300 flex flex-col"
+                                style={{ height: `${topHeight}%` }}
+                            >
+                                <div className="bg-[#222222] text-gray-100 px-2 py-[8px] border-b border-zinc-700 text-sm font-medium">
+                                    Input (stdin)
+                                </div>
+                                <div className="flex-1 overflow-auto">
+                                    <Editor
+                                        content={stdin}
+                                        onChange={onStdinChange}
+                                        extension={[loadLanguage('shell')]}
+                                    />
+                                </div>
+                            </div>
 
-                <div
-                    className="flex flex-col flex-1 overflow-auto"
-                    style={{ width: `${100 - leftWidth}%` }}
-                    ref={rightPanelRef}
-                >
-                    <div
-                        className="bg-white border-b border-gray-300 flex flex-col"
-                        style={{ height: `${topHeight}%` }}
-                    >
-                        <div className="bg-[#222222] text-gray-100 px-2 py-[8px] border-b border-zinc-700 text-sm font-medium">
-                            Input (stdin)
-                        </div>
-                        <div className="flex-1 overflow-auto">
-                            <Editor
-                                content={stdin}
-                                onChange={onStdinChange}
-                                extension={[loadLanguage('shell')]}
+                            <div
+                                className="h-[1px] bg-gray-700 cursor-row-resize hover:bg-gray-500 transition-colors flex-shrink-0"
+                                onMouseDown={handleVerticalMouseDown}
                             />
-                        </div>
-                    </div>
 
-                    <div
-                        className="h-[1px] bg-gray-700 cursor-row-resize hover:bg-gray-500 transition-colors flex-shrink-0"
-                        onMouseDown={handleVerticalMouseDown}
-                    />
+                            <div
+                                className="bg-white flex flex-col"
+                                style={{ height: `${100 - topHeight}%` }}
+                            >
+                                <div className="bg-[#222222] px-3 py-[8px] border-b border-gray-700 text-sm font-medium text-gray-100">
+                                    Output
+                                </div>
+                                <div className="flex-1 overflow-auto">
+                                    <Editor
+                                        content={result}
+                                        onChange={onResultChange}
+                                        extension={[loadLanguage('shell')]}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
 
-                    <div
-                        className="bg-white flex flex-col"
-                        style={{ height: `${100 - topHeight}%` }}
-                    >
-                        <div className="bg-[#222222] px-3 py-[8px] border-b border-gray-700 text-sm font-medium text-gray-100">
-                            Output
-                        </div>
-                        <div className="flex-1 overflow-auto">
-                            <Editor
-                                content={result}
-                                onChange={onResultChange}
-                                extension={[loadLanguage('shell')]}
-                            />
-                        </div>
+                {isMobile && (
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                        {showEditor ? (
+                            <div className="bg-zinc-900 flex flex-col overflow-auto flex-1">
+                                <div className="bg-[#222222] px-3 py-2 border-b-1 border-zinc-700 text-sm font-medium text-gray-100 flex items-center justify-between">
+                                    <span>Code Editor</span>
+                                    <div className="flex gap-1">
+                                        <button
+                                            onClick={() => setShowEditor(true)}
+                                            className={`px-2 py-1 text-xs rounded transition-colors ${showEditor
+                                                    ? 'bg-orange-600 text-white'
+                                                    : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                }`}
+                                        >
+                                            Editor
+                                        </button>
+                                        <button
+                                            onClick={() => setShowEditor(false)}
+                                            className={`px-2 py-1 text-xs rounded transition-colors ${!showEditor
+                                                    ? 'bg-orange-600 text-white'
+                                                    : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                }`}
+                                        >
+                                            I/O
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="flex-1">
+                                    <Editor
+                                        content={editorState.content}
+                                        onChange={onEditorStateChange}
+                                        extension={editorState.extension}
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col flex-1 overflow-hidden">
+                                <div className="bg-white border-b border-gray-300 flex flex-col flex-1">
+                                    <div className="bg-[#222222] text-gray-100 px-2 py-[8px] border-b border-zinc-700 text-sm font-medium flex items-center justify-between">
+                                        <span>Input (stdin)</span>
+                                        <div className="flex gap-1">
+                                            <button
+                                                onClick={() => setShowEditor(true)}
+                                                className={`px-2 py-1 text-xs rounded transition-colors ${showEditor
+                                                        ? 'bg-blue-600 text-white'
+                                                        : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                    }`}
+                                            >
+                                                Editor
+                                            </button>
+                                            <button
+                                                onClick={() => setShowEditor(false)}
+                                                className={`px-2 py-1 text-xs rounded transition-colors ${!showEditor
+                                                        ? 'bg-blue-600 text-white'
+                                                        : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                    }`}
+                                            >
+                                                I/O
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="flex-1 overflow-auto">
+                                        <Editor
+                                            content={stdin}
+                                            onChange={onStdinChange}
+                                            extension={[loadLanguage('shell')]}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="h-[1px] bg-gray-700 flex-shrink-0" />
+
+                                <div className="bg-white flex flex-col flex-1">
+                                    <div className="bg-[#222222] px-3 py-[8px] border-b border-gray-700 text-sm font-medium text-gray-100">
+                                        Output
+                                    </div>
+                                    <div className="flex-1 overflow-auto">
+                                        <Editor
+                                            content={result}
+                                            onChange={onResultChange}
+                                            extension={[loadLanguage('shell')]}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );
