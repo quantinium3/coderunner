@@ -9,7 +9,7 @@ type state = {
     value: string
     language: string;
     content: string;
-    extension: Extension | unknown,
+    extension: Extension[],
 }
 
 const States: state[] = [
@@ -17,31 +17,31 @@ const States: state[] = [
         value: 'c',
         language: 'c',
         content: '#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
-        extension: loadLanguage('c')
+        extension: [loadLanguage('c')!]
     },
     {
         value: 'cpp',
         language: 'cpp',
         content: '#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello, World!" << endl;\n    return 0;\n}',
-        extension: loadLanguage('cpp')
+        extension: [loadLanguage('cpp')!]
     },
     {
         value: 'python',
         language: 'python',
         content: 'print("Hello, World!")',
-        extension: loadLanguage('python')
+        extension: [loadLanguage('python')!]
     },
     {
         value: 'java',
         language: 'java',
         content: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
-        extension: loadLanguage('java')
+        extension: [loadLanguage('java')!]
     },
     {
         value: 'javascript',
         language: 'javascript',
         content: 'console.log("Hello, World!");',
-        extension: loadLanguage('javascript')
+        extension: [loadLanguage('javascript')!]
     }
 ];
 
@@ -50,7 +50,7 @@ function App() {
         value: "python",
         content: `print("hello world")`,
         language: "python",
-        extension: python(),
+        extension: [python()],
     })
     const [result, setResult] = useState("");
     const [stdin, setStdin] = useState("");
@@ -236,7 +236,7 @@ function App() {
                                     <Editor
                                         content={stdin}
                                         onChange={onStdinChange}
-                                        extension={[loadLanguage('shell')]}
+                                        extension={[loadLanguage('shell')!]}
                                     />
                                 </div>
                             </div>
@@ -257,7 +257,7 @@ function App() {
                                     <Editor
                                         content={result}
                                         onChange={onResultChange}
-                                        extension={[loadLanguage('shell')]}
+                                        extension={[loadLanguage('shell')!]}
                                     />
                                 </div>
                             </div>
@@ -275,8 +275,8 @@ function App() {
                                         <button
                                             onClick={() => setShowEditor(true)}
                                             className={`px-2 py-1 text-xs rounded transition-colors ${showEditor
-                                                    ? 'bg-orange-600 text-white'
-                                                    : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                ? 'bg-orange-600 text-white'
+                                                : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
                                                 }`}
                                         >
                                             Editor
@@ -284,8 +284,8 @@ function App() {
                                         <button
                                             onClick={() => setShowEditor(false)}
                                             className={`px-2 py-1 text-xs rounded transition-colors ${!showEditor
-                                                    ? 'bg-orange-600 text-white'
-                                                    : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                ? 'bg-orange-600 text-white'
+                                                : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
                                                 }`}
                                         >
                                             I/O
@@ -309,8 +309,8 @@ function App() {
                                             <button
                                                 onClick={() => setShowEditor(true)}
                                                 className={`px-2 py-1 text-xs rounded transition-colors ${showEditor
-                                                        ? 'bg-blue-600 text-white'
-                                                        : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                    ? 'bg-blue-600 text-white'
+                                                    : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
                                                     }`}
                                             >
                                                 Editor
@@ -318,8 +318,8 @@ function App() {
                                             <button
                                                 onClick={() => setShowEditor(false)}
                                                 className={`px-2 py-1 text-xs rounded transition-colors ${!showEditor
-                                                        ? 'bg-blue-600 text-white'
-                                                        : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
+                                                    ? 'bg-blue-600 text-white'
+                                                    : 'bg-zinc-700 text-gray-300 hover:bg-zinc-600'
                                                     }`}
                                             >
                                                 I/O
@@ -330,7 +330,7 @@ function App() {
                                         <Editor
                                             content={stdin}
                                             onChange={onStdinChange}
-                                            extension={[loadLanguage('shell')]}
+                                            extension={[loadLanguage('shell')!]}
                                         />
                                     </div>
                                 </div>
@@ -345,7 +345,7 @@ function App() {
                                         <Editor
                                             content={result}
                                             onChange={onResultChange}
-                                            extension={[loadLanguage('shell')]}
+                                            extension={[loadLanguage('shell')!]}
                                         />
                                     </div>
                                 </div>

@@ -1,6 +1,6 @@
-import CodeMirror from "@uiw/react-codemirror";
+import CodeMirror, { ViewUpdate, type Extension } from "@uiw/react-codemirror";
 
-export const Editor = ({ content, onChange, extension }) => {
+export const Editor = ({ content, onChange, extension }: { content: string, onChange: (value: string, viewUpdate: ViewUpdate) => void, extension: Extension[] }) => {
     return (
         <div className="h-full overflow-hidden">
             <CodeMirror
