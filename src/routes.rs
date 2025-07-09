@@ -1,11 +1,24 @@
-use axum::{Router, http::StatusCode, response::IntoResponse, routing::{get, post}};
+use axum::{
+    Router,
+    http::{StatusCode, header},
+    response::IntoResponse,
+    routing::{get, post},
+};
+use reqwest::Method;
+use tower_http::cors::{Any, CorsLayer};
 
-use crate::{handlers::{compile::compile, health::healthz}};
+use crate::handlers::{compile::compile, health::healthz};
 
 pub fn app_router() -> Router {
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods([Method::GET, Method::POST])
+        .allow_headers([header::CONTENT_TYPE]);
+
     Router::new()
-        .route("/healthz", get(healthz))
-        .route("/compile", post(compile))
+        .route("/api/v1/healthz", get(healthz))
+        .route("/api/v1/compile", post(compile))
+        .layer(cors)
         .fallback(handler_404)
 }
 
