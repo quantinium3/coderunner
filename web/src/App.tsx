@@ -99,7 +99,7 @@ function App() {
     }
 
     const compileCode = () => {
-        axios.post("https:/run.quantinium.dev/api/v1/compile", {
+        axios.post("https://run.quantinium.dev/api/v1/compile", {
             lang: editorState.language,
             content: editorState.content,
             stdin: stdin
