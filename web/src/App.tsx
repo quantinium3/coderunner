@@ -32,16 +32,70 @@ const States: state[] = [
         extension: [loadLanguage('python')!]
     },
     {
-        value: 'java',
-        language: 'java',
-        content: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}',
-        extension: [loadLanguage('java')!]
-    },
-    {
         value: 'javascript',
         language: 'javascript',
         content: 'console.log("Hello, World!");',
         extension: [loadLanguage('javascript')!]
+    },
+    {
+        value: 'zig',
+        language: 'zig',
+        content: 'const std = @import("std");\npub fn main() void {\n    std.debug.print("Hello, World!\\n", .{});\n}',
+        extension: [loadLanguage('c')!]
+    },
+    {
+        value: "scala",
+        language: "scala",
+        content: "object HelloWorld {\n  def main(args: Array[String]): Unit = {\n    println(\"Hello, World!\")\n  }\n}",
+        extension: [loadLanguage("scala")!]
+    },
+    {
+        value: "groovy",
+        language: "groovy",
+        content: "println 'Hello, World!'",
+        extension: [loadLanguage("groovy")!]
+    },
+    {
+        value: "dart",
+        language: "dart",
+        content: "void main() {\n  print('Hello, World!');\n}",
+        extension: [loadLanguage("dart")!]
+    },
+    {
+        value: "ruby",
+        language: "ruby",
+        content: "puts 'Hello, World!'",
+        extension: [loadLanguage("ruby")!]
+    },
+    {
+        value: "lua",
+        language: "lua",
+        content: "print('Hello, World!')",
+        extension: [loadLanguage("lua")!]
+    },
+    {
+        value: "julia",
+        language: "julia",
+        content: "println(\"Hello, World!\")",
+        extension: [loadLanguage("julia")!]
+    },
+    {
+        value: "perl",
+        language: "perl",
+        content: "print \"Hello, World!\\n\";",
+        extension: [loadLanguage("perl")!]
+    },
+    {
+        value: "crystal",
+        language: "crystal",
+        content: "puts \"Hello, World!\"",
+        extension: [loadLanguage("crystal")!]
+    },
+    {
+        value: "hs",
+        language: "haskell",
+        content: "main = putStrLn \"Hello, World!\"",
+        extension: [loadLanguage("haskell")!]
     }
 ];
 
@@ -178,7 +232,7 @@ function App() {
                     >
                         {States.map((State: state) => (
                             <option key={State.value} value={State.value} className="bg-zinc-800">
-                                <span>{State.language}</span>
+                                {State.language}
                             </option>
                         ))}
                     </select>

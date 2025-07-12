@@ -11,7 +11,7 @@ RUN cargo build --release
 
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get upgrade -y && apt-get install -y libssl3 python3 lua5.4 clang openjdk-17-jdk scala groovy ruby-full perl ghc curl gpg && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libssl3 python3 lua5.4 clang openjdk-17-jdk groovy ruby-full perl ghc curl gpg && rm -rf /var/lib/apt/lists/*
 
 # crystal
 RUN curl -fsSL https://crystal-lang.org/install.sh | bash
@@ -22,7 +22,7 @@ RUN echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storag
 RUN apt-get update && apt-get install dart
 
 # julia
-RUN curl -fsSL https://install.julialang.org | sh -s -- -y
+RUN curl -fsSL https://install.julialang.org | sh -s -- --yes --add-to-path=yes 
 
 # bun
 RUN curl -fsSL https://bun.com/install | bash
@@ -35,6 +35,15 @@ RUN curl -L https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_V
 
 # Add Zig to PATH
 ENV PATH="/opt/zig:${PATH}"
+
+#cpp
+RUN apt-get install -y g++
+
+# scala
+RUN curl -fL https://github.com/coursier/coursier/releases/latest/download/cs-x86_64-pc-linux.gz | gzip -d > cs && chmod +x cs && ./cs setup
+
+# rust
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s --yes
 
 COPY --from=builder /app/target/release/comphub /usr/local/bin/comphub
 CMD ["comphub"]

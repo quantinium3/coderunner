@@ -10,7 +10,7 @@ pub async fn compile_javascript(content: &str, stdin_input: &str) -> Result<Stri
     temp_file.write_all(content.as_bytes())?;
     temp_file.flush()?;
 
-    let mut cmd = Command::new("bun")
+    let mut cmd = Command::new("/run/current-system/sw/bin/bun")
         .arg(temp_file.path())
         .stdout(Stdio::piped())
         .stdin(Stdio::piped())

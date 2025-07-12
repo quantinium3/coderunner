@@ -1,71 +1,71 @@
 languages supported :- 
-  comphub  web 
-- [x]      [x] python
-- [x]      [ ] javascript
-- [x]      [ ] typescript 
-- [x]      [x] c
-- [x]      [ ] cpp
-- [x]      [ ] rust
-- [x]      [ ] nix
-- [x]      [ ] go
-- [x]      [ ] zig
-- [x]      [ ] d
-- [ ]      [ ] swift
-- [ ]      [ ] objective c
-- [ ]      [ ] c#
-- [ ]      [ ] kotlin
-- [x]      [ ] scala
-- [x]      [ ] groovy
-- [x]      [ ] dart
-- [x]      [ ] ruby 
-- [x]      [ ] lua
-- [x]      [ ] julia
-- [x]      [ ] R
-- [x]      [ ] perl
-- [x]      [] crystal
-- [ ]      [ ] nim
-- [x]      [ ] haskell
-- [ ]      [ ] elm
-- [ ]      [ ] f#
-- [ ]      [ ] ocaml
-- [ ]      [ ] elixir
-- [ ]      [ ] erlang
-- [ ]      [ ] php
-- [ ]      [ ] fortran
-- [ ]      [ ] cobol
-- [ ]      [ ] ada
-- [ ]      [ ] pascal
-- [ ]      [ ] scheme
-- [ ]      [ ] clojure
-- [ ]      [ ] bash
-- [ ]      [ ] powershell
-- [ ]      [ ] assembly
-- [ ]      [ ] prolog
-- [ ]      [ ] Carbon
-- [ ]      [ ] fish
-- [ ]      [ ] agda
-- [ ]      [ ] purescript
-- [ ]      [ ] coffeescript
-- [ ]      [ ] Hack
-- [ ]      [ ] gleam
-- [ ]      [ ] odin
-- [ ]      [ ] B
-- [ ]      [ ] forth
-- [ ]      [ ] smalltalk
-- [ ]      [ ] tcl
-- [ ]      [ ] vb
-- [ ]      [ ] jq
-- [ ]      [ ] algol
-- [ ]      [ ] idris
-- [ ]      [ ] whitespace
-- [ ]      [ ] factor
-- [ ]      [ ] racket
-- [ ]      [ ] common lisp
-- [ ]      [ ] vala
-- [ ]      [ ] mercury
-- [ ]      [ ] pike
-- [ ]      [ ] wren
-- [ ]      [ ] logtalk
-- [ ]      [ ] io
-- [ ]      [ ] v
-- [ ]      [ ] janet
+  comphub  web pkg_installed 
+- [x]      [x]      [x]           python
+- [x]      [x]      [x]           javascript
+- [x]      [x]      [x]           typescript 
+- [x]      [x]      [x]           c
+- [x]      [x]      [x]           cpp
+- [x]      [ ]      [ ]           rust
+- [x]      [ ]      [ ]           nix
+- [x]      [ ]      [ ]           go
+- [x]      [x]      [x]           zig
+- [x]      [ ]      [ ]           d
+- [ ]      [ ]      [ ]           swift
+- [ ]      [ ]      [ ]           objective c
+- [ ]      [ ]      [ ]           c#
+- [ ]      [ ]      [ ]           kotlin
+- [x]      [ ]      [ ]           scala
+- [x]      [ ]      [x]           groovy
+- [x]      [ ]      [x]           dart
+- [x]      [ ]      [x]           ruby 
+- [x]      [ ]      [x]           lua
+- [x]      [ ]      [ ]           julia
+- [x]      [ ]      [ ]           R
+- [x]      [ ]      [x]           perl
+- [x]      [ ]      [x]           crystal
+- [ ]      [ ]      [ ]           nim
+- [x]      [ ]      [x]           haskell
+- [ ]      [ ]      [ ]           elm
+- [ ]      [ ]      [ ]           f#
+- [ ]      [ ]      [ ]           ocaml
+- [ ]      [ ]      [ ]           elixir
+- [ ]      [ ]      [ ]           erlang
+- [ ]      [ ]      [ ]           php
+- [ ]      [ ]      [ ]           fortran
+- [ ]      [ ]      [ ]           cobol
+- [ ]      [ ]      [ ]           ada
+- [ ]      [ ]      [ ]           pascal
+- [ ]      [ ]      [ ]           scheme
+- [ ]      [ ]      [ ]           clojure
+- [ ]      [ ]      [ ]           bash
+- [ ]      [ ]      [ ]           powershell
+- [ ]      [ ]      [ ]           assembly
+- [ ]      [ ]      [ ]           prolog
+- [ ]      [ ]      [ ]           Carbon
+- [ ]      [ ]      [ ]           fish
+- [ ]      [ ]      [ ]           agda
+- [ ]      [ ]      [ ]           purescript
+- [ ]      [ ]      [ ]           coffeescript
+- [ ]      [ ]      [ ]           Hack
+- [ ]      [ ]      [ ]           gleam
+- [ ]      [ ]      [ ]           odin
+- [ ]      [ ]      [ ]           B
+- [ ]      [ ]      [ ]           forth
+- [ ]      [ ]      [ ]           smalltalk
+- [ ]      [ ]      [ ]           tcl
+- [ ]      [ ]      [ ]           vb
+- [ ]      [ ]      [ ]           jq
+- [ ]      [ ]      [ ]           algol
+- [ ]      [ ]      [ ]           idris
+- [ ]      [ ]      [ ]           whitespace
+- [ ]      [ ]      [ ]           factor
+- [ ]      [ ]      [ ]           racket
+- [ ]      [ ]      [ ]           common lisp
+- [ ]      [ ]      [ ]           vala
+- [ ]      [ ]      [ ]           mercury
+- [ ]      [ ]      [ ]           pike
+- [ ]      [ ]      [ ]           wren
+- [ ]      [ ]      [ ]           logtalk
+- [ ]      [ ]      [ ]           io
+- [ ]      [ ]      [ ]           v
+- [ ]      [ ]      [ ]           janet
