@@ -29,7 +29,7 @@ async fn init_config() -> Config {
     dotenv().ok();
 
     let server_config = ServerConfig {
-        host: env::var("HOST").unwrap_or_else(|_| String::from("127.0.0.1")),
+        host: env::var("HOST").unwrap_or_else(|_| String::from("0.0.0.0")),
         port: env::var("PORT")
             .unwrap_or_else(|_| String::from("5000"))
             .parse::<u16>()

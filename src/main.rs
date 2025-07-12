@@ -8,7 +8,6 @@ use comphub::utils::init_tracing;
 async fn main() -> Result<(), ServerError> {
     init_tracing();
     let app_config = config().await;
-    env::set_var("TMPDIR", "/tmp");
 
     let addr = format!("{}:{}", app_config.server_host(), app_config.server_port());
     let socket_addr: SocketAddrV4 = addr.parse()?;
