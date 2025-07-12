@@ -11,7 +11,7 @@ RUN cargo build --release
 
 FROM ubuntu:22.04
 
-RUN apt-get update && apt-get install -y libssl3 python3 lua5.4 clang openjdk-17-jdk scala groovy ruby-full perl ghc curl gpg snap && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libssl3 python3 lua5.4 clang openjdk-17-jdk scala groovy ruby-full perl ghc curl gpg && rm -rf /var/lib/apt/lists/*
 
 # crystal
 RUN curl -fsSL https://crystal-lang.org/install.sh | bash
@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install apt-transport-https && wget -qO- https://d
 RUN echo 'deb [signed-by=/usr/share/keyrings/dart.gpg arch=amd64] https://storage.googleapis.com/download.dartlang.org/linux/debian stable main' | tee /etc/apt/sources.list.d/dart_stable.list
 RUN apt-get update && apt-get install dart
 
-# julia 
+# julia
 RUN curl -fsSL https://install.julialang.org | sh -s -- -y
 
 # bun
