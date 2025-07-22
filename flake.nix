@@ -79,9 +79,7 @@
               RestartSec = "10s";
               StandardOutput = "journal";
               StandardError = "journal";
-              User = "coderunner";
-              Group = "coderunner";
-              DynamicUser = true;
+              User = "nixie";
               NoNewPrivileges = true;
               PrivateTmp = true;
               ProtectHome = true;
