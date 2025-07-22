@@ -60,10 +60,7 @@
             luaPackages.lua
           ];
           
-          coderunnerWrapper = pkgs.writeShellScript "coderunner-wrapper" ''
-            export PATH="${pkgs.lib.makeBinPath compilerPackages}:$PATH"
-            exec ${self.packages.${pkgs.system}.coderunner}/bin/comphub "$@"
-          '';
+          compilerPaths = pkgs.lib.makeBinPath compilerPackages;
         in
         {
           options.services.coderunner = {
@@ -77,12 +74,13 @@
               after = [ "network.target" ];
               wantedBy = [ "multi-user.target" ];
               serviceConfig = {
-                ExecStart = "${coderunnerWrapper}";
+                ExecStart = "${self.packages.${pkgs.system}.coderunner}/bin/comphub";
                 Restart = "always";
                 RestartSec = "10s";
                 StandardOutput = "journal";
                 StandardError = "journal";
                 User = "nixie";
+                Environment = "PATH=${compilerPaths}:$PATH";
               };
             };
           };
