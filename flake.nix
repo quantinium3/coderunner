@@ -27,33 +27,6 @@
             ];
             buildInputs = with pkgs; [
               openssl
-              zig
-              crystal
-              dmd
-              dart
-              go
-              groovy
-              ghc
-              julia
-              nix
-              odin
-              perl
-              ruby
-              rustc
-              scala
-              bfc
-              R
-              clang
-              bun
-              python3
-              go
-              luaPackages.lua
-              nix
-              perl
-              R
-              ruby
-              rustc
-              scala
             ];
           };
         in
@@ -62,12 +35,9 @@
           packages.coderunner = coderunner;
         }
       ) // {
-      nixosModules.coderunner = { config, pkgs, lib, ... }: {
-        options.services.coderunner = {
-          enable = lib.mkEnableOption "coderunner backend";
-        };
-        config = lib.mkIf config.services.coderunner.enable {
-          environment.systemPackages = with pkgs; [
+      nixosModules.coderunner = { config, pkgs, lib, ... }: 
+        let
+          compilerPackages = with pkgs; [
             zig
             crystal
             dmd
@@ -87,29 +57,35 @@
             clang
             bun
             python3
-            go
             luaPackages.lua
-            nix
-            perl
-            R
-            ruby
-            rustc
-            scala
           ];
-          systemd.services.coderunner = {
-            description = "coderunner backend";
-            after = [ "network.target" ];
-            wantedBy = [ "multi-user.target" ];
-            serviceConfig = {
-              ExecStart = "${self.packages.${pkgs.system}.coderunner}/bin/comphub";
-              Restart = "always";
-              RestartSec = "10s";
-              StandardOutput = "journal";
-              StandardError = "journal";
-              User = "nixie";
+          
+          coderunnerWrapper = pkgs.writeShellScript "coderunner-wrapper" ''
+            export PATH="${pkgs.lib.makeBinPath compilerPackages}:$PATH"
+            exec ${self.packages.${pkgs.system}.coderunner}/bin/comphub "$@"
+          '';
+        in
+        {
+          options.services.coderunner = {
+            enable = lib.mkEnableOption "coderunner backend";
+          };
+          config = lib.mkIf config.services.coderunner.enable {
+            environment.systemPackages = compilerPackages;
+            
+            systemd.services.coderunner = {
+              description = "coderunner backend";
+              after = [ "network.target" ];
+              wantedBy = [ "multi-user.target" ];
+              serviceConfig = {
+                ExecStart = "${coderunnerWrapper}";
+                Restart = "always";
+                RestartSec = "10s";
+                StandardOutput = "journal";
+                StandardError = "journal";
+                User = "nixie";
+              };
             };
           };
         };
-      };
     };
 }
