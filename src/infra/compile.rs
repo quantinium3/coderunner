@@ -1,5 +1,5 @@
 use super::{
-    c::compile_c, cpp::compile_cpp, crystal::compile_crystal, d::compile_d, dart::compile_dart, error::InfraError, go::compile_go, groovy::compile_groovy, haskell::compile_haskell, javascript::compile_javascript, julia::compile_julia, lua::compile_lua, nix::compile_nix, perl::compile_perl, python::compile_python, r::compile_r, ruby::compile_ruby, rust::compile_rust, scala::compile_scala, zig::compile_zig
+    brainfuck::compile_brainfuck, c::compile_c, cpp::compile_cpp, crystal::compile_crystal, d::compile_d, dart::compile_dart, error::InfraError, go::compile_go, groovy::compile_groovy, haskell::compile_haskell, javascript::compile_javascript, julia::compile_julia, lua::compile_lua, nix::compile_nix, perl::compile_perl, python::compile_python, r::compile_r, ruby::compile_ruby, rust::compile_rust, scala::compile_scala, zig::compile_zig
 };
 
 pub async fn compile_lang(lang: &str, content: &str, stdin: &str) -> Result<String, InfraError> {
@@ -24,6 +24,7 @@ pub async fn compile_lang(lang: &str, content: &str, stdin: &str) -> Result<Stri
         "perl" => compile_perl(content, stdin).await,
         "crystal" => compile_crystal(content, stdin).await,
         "haskell" => compile_haskell(content, stdin).await,
+        "brainfuck" => compile_brainfuck(content, stdin).await,
         _ => Err(InfraError::UnsupportedLanguage(format!(
             "{} languages is not supported",
             lang

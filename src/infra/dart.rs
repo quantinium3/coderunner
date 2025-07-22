@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_dart(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".dart")?;
@@ -13,7 +14,7 @@ pub async fn compile_dart(content: &str, stdin_input: &str) -> Result<String, In
     let executable_path = executable_file.path().to_path_buf();
     drop(executable_file);
 
-    let compile_output = Command::new("dart")
+    let compile_output = Command::new(which("dart")?)
         .arg("compile")
         .arg("exe")
         .arg(&source_path)

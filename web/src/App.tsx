@@ -4,6 +4,7 @@ import { type Extension } from '@codemirror/state';
 import { python } from '@codemirror/lang-python';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import axios from "axios";
+import { rust } from '@codemirror/lang-rust';
 
 type state = {
     value: string
@@ -96,6 +97,12 @@ const States: state[] = [
         language: "haskell",
         content: "main = putStrLn \"Hello, World!\"",
         extension: [loadLanguage("haskell")!]
+    },
+    {
+        value: "rust",
+        language: "rust",
+        content: "fn main() {\n    println!(\"Hello, World!\");\n}",
+        extension: [rust()]
     }
 ];
 

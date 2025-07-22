@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_c(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".c")?;
@@ -13,7 +14,7 @@ pub async fn compile_c(content: &str, stdin_input: &str) -> Result<String, Infra
     let executable_path = executable_file.path().to_path_buf();
     drop(executable_file);
 
-    let compile_output = Command::new("zig")
+    let compile_output = Command::new(which("zig")?)
         .arg("cc")
         .arg(source_path)
         .arg("-o")

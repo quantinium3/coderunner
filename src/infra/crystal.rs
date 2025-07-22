@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_crystal(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".cr")?;
@@ -13,7 +14,7 @@ pub async fn compile_crystal(content: &str, stdin_input: &str) -> Result<String,
     let executable_path = executable_file.path().to_path_buf();
     drop(executable_file);
 
-    let compile_output = Command::new("crystal")
+    let compile_output = Command::new(which("crystal")?)
         .arg("build")
         .arg(&source_path)
         .arg("-o")

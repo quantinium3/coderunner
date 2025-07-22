@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_groovy(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".groovy")?;
@@ -12,7 +13,7 @@ pub async fn compile_groovy(content: &str, stdin_input: &str) -> Result<String, 
     let output_dir = tempfile::tempdir()?;
     let output_path = output_dir.path();
 
-    let compile_output = Command::new("groovyc")
+    let compile_output = Command::new(which("groovyc")?)
         .arg(&source_path)
         .arg("--classpath")
         .arg(output_path)

@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_nix(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".nix")?;
@@ -10,7 +11,7 @@ pub async fn compile_nix(content: &str, stdin_input: &str) -> Result<String, Inf
 
     let source_path = temp_file.path().to_path_buf();
 
-    let eval_output = Command::new("nix")
+    let eval_output = Command::new(which("nix")?)
         .arg("eval")
         .arg("--file")
         .arg(&source_path)

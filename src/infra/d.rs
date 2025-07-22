@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_d(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".d")?;
@@ -13,7 +14,7 @@ pub async fn compile_d(content: &str, stdin_input: &str) -> Result<String, Infra
     let executable_file = NamedTempFile::new()?;
     drop(executable_file);
 
-    let mut cmd = Command::new("dmd")
+    let mut cmd = Command::new(which("dmd")?)
         .arg("-run")
         .arg(&source_path)
         .stdin(Stdio::piped())

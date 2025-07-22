@@ -13,4 +13,7 @@ pub enum InfraError {
 
     #[error("IO error: {0}")]
     IoError(#[from] std::io::Error),
+
+    #[error("Failed to find the binary: {0}")]
+    CompilerNotFound(#[from] which::Error),
 }

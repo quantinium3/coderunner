@@ -1,17 +1,17 @@
 use super::error::InfraError;
-use std::env;
 use std::io::Write;
 use std::process::Stdio;
 use tempfile::NamedTempFile;
 use tokio::io::AsyncWriteExt;
 use tokio::process::Command;
+use which::which;
 
 pub async fn compile_python(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::new()?;
     temp_file.write_all(content.as_bytes())?;
     temp_file.flush()?;
 
-    let mut cmd = Command::new("python3")
+    let mut cmd = Command::new(which("python3")?)
         .arg(temp_file.path())
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())

@@ -19,4 +19,4 @@ mod rust;
 mod scala;
 mod zig;
 mod haskell;
-mod odin;
+mod brainfuck;

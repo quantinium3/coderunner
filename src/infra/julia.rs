@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_julia(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".jl")?;
@@ -10,7 +11,7 @@ pub async fn compile_julia(content: &str, stdin_input: &str) -> Result<String, I
 
     let source_path = temp_file.path().to_path_buf();
 
-    let mut cmd = Command::new("julia")
+    let mut cmd = Command::new(which("julia")?)
         .arg(&source_path)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())

@@ -1,16 +1,15 @@
 use std::{io::Write, process::Stdio};
-
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
-
 use super::error::InfraError;
+use which::which;
 
 pub async fn compile_javascript(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::new()?;
     temp_file.write_all(content.as_bytes())?;
     temp_file.flush()?;
 
-    let mut cmd = Command::new("/run/current-system/sw/bin/bun")
+    let mut cmd = Command::new(which("bun")?)
         .arg(temp_file.path())
         .stdout(Stdio::piped())
         .stdin(Stdio::piped())

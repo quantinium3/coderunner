@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{fs::File, io::Write, process::Stdio};
 use tempfile::{TempDir};
 use tokio::{fs::metadata, io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_go(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let temp_dir = TempDir::new()?;
@@ -27,7 +28,7 @@ pub async fn compile_go(content: &str, stdin_input: &str) -> Result<String, Infr
     eprintln!("Executing go run on file: {:?}", temp_file_path);
     eprintln!("File content: {}", content);
 
-    let mut cmd = Command::new("go")
+    let mut cmd = Command::new(which("go")?)
         .arg("run")
         .arg(&temp_file_path)
         .current_dir(temp_dir.path())

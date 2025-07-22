@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_scala(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".scala")?;
@@ -12,7 +13,7 @@ pub async fn compile_scala(content: &str, stdin_input: &str) -> Result<String, I
     let output_dir = tempfile::tempdir()?;
     let output_path = output_dir.path();
 
-    let compile_output = Command::new("scalac")
+    let compile_output = Command::new(which("scalac")?)
         .arg(&source_path)
         .arg("-d")
         .arg(output_path)

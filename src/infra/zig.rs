@@ -2,6 +2,7 @@ use super::error::InfraError;
 use std::{io::Write, process::Stdio};
 use tempfile::NamedTempFile;
 use tokio::{io::AsyncWriteExt, process::Command};
+use which::which;
 
 pub async fn compile_zig(content: &str, stdin_input: &str) -> Result<String, InfraError> {
     let mut temp_file = NamedTempFile::with_suffix(".zig")?;
@@ -12,7 +13,7 @@ pub async fn compile_zig(content: &str, stdin_input: &str) -> Result<String, Inf
     let executable_file = NamedTempFile::new()?;
     drop(executable_file);
 
-    let mut cmd = Command::new("zig")
+    let mut cmd = Command::new(which("zig")?)
         .arg("run")
         .arg(&source_path)
         .stdin(Stdio::piped())
