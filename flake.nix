@@ -80,9 +80,6 @@
               StandardOutput = "journal";
               StandardError = "journal";
               User = "nixie";
-              NoNewPrivileges = true;
-              PrivateTmp = true;
-              ProtectHome = true;
             };
           };
         };
