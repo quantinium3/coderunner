@@ -27,33 +27,6 @@
             ];
             buildInputs = with pkgs; [
               openssl
-              zig
-              crystal
-              dmd
-              dart
-              go
-              groovy
-              ghc
-              julia
-              nix
-              odin
-              perl
-              ruby
-              rustc
-              scala
-              bfc
-              R
-              clang
-              bun
-              python3
-              go
-              luaPackages.lua
-              nix
-              perl
-              R
-              ruby
-              rustc
-              scala
             ];
           };
         in
@@ -67,6 +40,35 @@
           enable = lib.mkEnableOption "coderunner backend";
         };
         config = lib.mkIf config.services.coderunner.enable {
+          environment.systemPackages = with pkgs; [
+            zig
+            crystal
+            dmd
+            dart
+            go
+            groovy
+            ghc
+            julia
+            nix
+            odin
+            perl
+            ruby
+            rustc
+            scala
+            bfc
+            R
+            clang
+            bun
+            python3
+            go
+            luaPackages.lua
+            nix
+            perl
+            R
+            ruby
+            rustc
+            scala
+          ];
           systemd.services.coderunner = {
             description = "coderunner backend";
             after = [ "network.target" ];
