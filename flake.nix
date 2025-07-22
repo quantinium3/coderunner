@@ -84,7 +84,6 @@
               DynamicUser = true;
               NoNewPrivileges = true;
               PrivateTmp = true;
-              ProtectSystem = "strict";
               ProtectHome = true;
             };
           };
