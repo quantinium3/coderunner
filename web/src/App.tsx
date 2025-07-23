@@ -15,6 +15,12 @@ type state = {
 
 const States: state[] = [
     {
+        value: 'brainfuck',
+        language: 'brainfuck',
+        content: '++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.',
+        extension: [loadLanguage('brainfuck')!]
+    },
+    {
         value: 'c',
         language: 'c',
         content: '#include <stdio.h>\n\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
@@ -27,10 +33,40 @@ const States: state[] = [
         extension: [loadLanguage('cpp')!]
     },
     {
-        value: 'python',
-        language: 'python',
-        content: 'print("Hello, World!")',
-        extension: [loadLanguage('python')!]
+        value: 'crystal',
+        language: 'crystal',
+        content: 'puts "Hello, World!"',
+        extension: [loadLanguage('crystal')!]
+    },
+    {
+        value: 'd',
+        language: 'd',
+        content: 'import std.stdio;\n\nvoid main() {\n    writeln("hello world");\n}',
+        extension: [loadLanguage('d')!]
+    },
+    {
+        value: 'dart',
+        language: 'dart',
+        content: "void main() {\n  print('Hello, World!');\n}",
+        extension: [loadLanguage('dart')!]
+    },
+    {
+        value: 'go',
+        language: 'go',
+        content: 'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("hello world")\n}',
+        extension: [loadLanguage('go')!]
+    },
+    {
+        value: 'groovy',
+        language: 'groovy',
+        content: "println 'Hello, World!'",
+        extension: [loadLanguage('groovy')!]
+    },
+    {
+        value: 'hs',
+        language: 'haskell',
+        content: 'main = putStrLn "Hello, World!"',
+        extension: [loadLanguage('haskell')!]
     },
     {
         value: 'javascript',
@@ -39,79 +75,73 @@ const States: state[] = [
         extension: [loadLanguage('javascript')!]
     },
     {
+        value: 'julia',
+        language: 'julia',
+        content: 'println("Hello, World!")',
+        extension: [loadLanguage('julia')!]
+    },
+    {
+        value: 'lua',
+        language: 'lua',
+        content: "print('Hello, World!')",
+        extension: [loadLanguage('lua')!]
+    },
+    {
+        value: 'nix',
+        language: 'nix',
+        content: '"hello world"',
+        extension: [loadLanguage('nix')!]
+    },
+    {
+        value: 'perl',
+        language: 'perl',
+        content: 'print "Hello, World!\\n";',
+        extension: [loadLanguage('perl')!]
+    },
+    {
+        value: 'python',
+        language: 'python',
+        content: 'print("Hello, World!")',
+        extension: [loadLanguage('python')!]
+    },
+    {
+        value: 'r',
+        language: 'r',
+        content: 'cat("hello world\\n")',
+        extension: [loadLanguage('r')!]
+    },
+    {
+        value: 'ruby',
+        language: 'ruby',
+        content: "puts 'Hello, World!'",
+        extension: [loadLanguage('ruby')!]
+    },
+    {
+        value: 'scala',
+        language: 'scala',
+        content: 'object Main {\n  def main(args: Array[String]): Unit = {\n    println("Hello, World!")\n  }\n}',
+        extension: [loadLanguage('scala')!]
+    },
+    {
+        value: 'typescript',
+        language: 'typescript',
+        content: 'console.log("Hello, World!");',
+        extension: [loadLanguage('typescript')!]
+    },
+    {
         value: 'zig',
         language: 'zig',
-        content: 'const std = @import("std");\npub fn main() void {\n    std.debug.print("Hello, World!\\n", .{});\n}',
+        content: 'const std = @import("std");\n\npub fn main() !void {\n    const stdout = std.io.getStdOut().writer();\n    try stdout.print("Hello, World!\\n", .{});\n}',
         extension: [loadLanguage('c')!]
-    },
-    {
-        value: "scala",
-        language: "scala",
-        content: "object HelloWorld {\n  def main(args: Array[String]): Unit = {\n    println(\"Hello, World!\")\n  }\n}",
-        extension: [loadLanguage("scala")!]
-    },
-    {
-        value: "groovy",
-        language: "groovy",
-        content: "println 'Hello, World!'",
-        extension: [loadLanguage("groovy")!]
-    },
-    {
-        value: "dart",
-        language: "dart",
-        content: "void main() {\n  print('Hello, World!');\n}",
-        extension: [loadLanguage("dart")!]
-    },
-    {
-        value: "ruby",
-        language: "ruby",
-        content: "puts 'Hello, World!'",
-        extension: [loadLanguage("ruby")!]
-    },
-    {
-        value: "lua",
-        language: "lua",
-        content: "print('Hello, World!')",
-        extension: [loadLanguage("lua")!]
-    },
-    {
-        value: "julia",
-        language: "julia",
-        content: "println(\"Hello, World!\")",
-        extension: [loadLanguage("julia")!]
-    },
-    {
-        value: "perl",
-        language: "perl",
-        content: "print \"Hello, World!\\n\";",
-        extension: [loadLanguage("perl")!]
-    },
-    {
-        value: "crystal",
-        language: "crystal",
-        content: "puts \"Hello, World!\"",
-        extension: [loadLanguage("crystal")!]
-    },
-    {
-        value: "hs",
-        language: "haskell",
-        content: "main = putStrLn \"Hello, World!\"",
-        extension: [loadLanguage("haskell")!]
-    },
-    {
-        value: "rust",
-        language: "rust",
-        content: "fn main() {\n    println!(\"Hello, World!\");\n}",
-        extension: [rust()]
     }
 ];
 
 function App() {
     const [editorState, setEditorState] = useState<state>({
-        value: "python",
-        content: `print("hello world")`,
-        language: "python",
-        extension: [python()],
+        value: "brainfuck",
+        content: `++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.`,
+        language: "brainfuck",
+        extension: [loadLanguage("brainfuck")!],
     })
     const [result, setResult] = useState("");
     const [stdin, setStdin] = useState("");
@@ -160,7 +190,7 @@ function App() {
     }
 
     const compileCode = () => {
-        axios.post("https://run.quantinium.dev/api/v1/compile", {
+        axios.post("http://localhost:5000/api/v1/compile", {
             lang: editorState.language,
             content: editorState.content,
             stdin: stdin
