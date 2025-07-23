@@ -70,7 +70,7 @@
               Env = [ 
                 "PATH=${coderunner}/bin:${pkgs.lib.makeBinPath (compilerPackages ++ [ pkgs.bash pkgs.coreutils pkgs.findutils pkgs.gnused pkgs.gnugrep ])}"
               ];
-              Cmd = [ "${coderunner}/bin/coderunner" ];
+              Cmd = [ "${coderunner}/bin/comphub" ];
               ExposedPorts = {
                 "5000/tcp" = {};
               };
