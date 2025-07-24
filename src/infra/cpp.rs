@@ -14,7 +14,7 @@ pub async fn compile_cpp(content: &str, stdin_input: &str) -> Result<String, Inf
     let executable_path = executable_file.path().to_path_buf();
     drop(executable_file);
 
-    let compile_output = Command::new(which("g++")?)
+    let compile_output = Command::new(which("clang++")?)
         .arg(source_path)
         .arg("-o")
         .arg(&executable_path)
