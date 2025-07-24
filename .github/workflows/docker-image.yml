@@ -17,7 +17,7 @@ jobs:
     - name: Build the Docker image
       run: |
         docker login --username quantinium3 --password ${{ secrets.GH_PAT }} ghcr.io
-        docker build . --file Dockerfile --tag coderunner:$(date +%s)
+        docker build . --file Dockerfile -t ghcr.io/quantinium3/coderunner:$(date +%s)
 
     - name: push to ghcr
       run: docker push ghcr.io/quantinium3/coderunner:$(date +%s)
