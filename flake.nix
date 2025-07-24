@@ -12,37 +12,14 @@
         let
           pkgs = import nixpkgs { inherit system; };
 
-          compilerPackages = with pkgs;[
-            zig
-            crystal
-            dmd
-            dart
-            go
-            groovy
-            ghc
-            julia
-            nix
-            odin
-            perl
-            ruby
-            rustc
-            scala
-            bfc
-            R
-            clang
-            bun
-            python3
-            luaPackages.lua
-          ];
-
           bin = pkgs.rustPlatform.buildRustPackage rec {
             pname = "coderunner";
             version = "0.1.0";
             src = pkgs.fetchFromGitHub {
               owner = "quantinium3";
               repo = "coderunner";
-              rev = "61153a03bcfba107541b1014329eeb0f184b567e";
-              sha256 = "sha256-iv8kUHUywUrlbucIRqoen1PcSNSK9G86crPMzqRdN9U=";
+              rev = "c3c53a1ee8242a17a8cd9625b5b08a3704aca63b";
+              sha256 = "sha256-BlCmm8a36FYEUClyqPRv2N8n6/DpiKgI7ivwFSyVaPU=";
             };
             doCheck = false;
             cargoHash = "sha256-cJ1h6RrUhjT0sGgEa0B6OP1luTdFWaz+8LtVyVeDwSs=";
