@@ -68,4 +68,4 @@ languages supported :-
 - [ ]      [ ]      [ ]           logtalk
 - [ ]      [ ]      [ ]           io
 - [ ]      [ ]      [ ]           v
-- [ ]      [ ]      [ ]           janet
+- [x]      [ ]      [ ]           janet
